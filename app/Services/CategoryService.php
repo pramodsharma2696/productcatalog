@@ -35,7 +35,6 @@ class CategoryService
 
         return new CategoryBO(
             $category->name,
-            $category->description,
             $category->parent_category_id
         );
     }
@@ -51,15 +50,24 @@ class CategoryService
     /**
      * Update an existing category by its ID.
      */
-    public function updateCategory(int $id, CategoryBO $categoryBO)
+
+     public function updateCategory(int $id, CategoryBO $categoryBO)
     {
-        $updated = $this->categoryRepository->update($id, $categoryBO);
-        if (!$updated) {
+        // Ensure category exists before updating
+        $category = $this->categoryRepository->findById($id);
+        
+        if (!$category) {
             throw new ModelNotFoundException("Category not found for update");
         }
-        $category = $this->categoryRepository->findById($id);
-        return $category;
+
+        // Perform the update
+        $updated = $this->categoryRepository->update($id, $categoryBO);
+
+        return $updated; // Return true if successful
     }
+
+     
+
 
     /**
      * Delete a category by its ID.

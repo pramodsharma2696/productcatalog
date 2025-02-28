@@ -18,9 +18,9 @@ class ProductService
     /**
      * Retrieve all products with optional category filtering.
      */
-    public function getAllProducts(int $categoryId = null)
+    public function getAllProducts(?int $categoryId = null, ?string $search = null)
     {
-        return $this->productRepository->getAll($categoryId);
+        return $this->productRepository->getAll($categoryId, $search);
     }
 
     /**
@@ -33,7 +33,7 @@ class ProductService
         if (!$product) {
             throw new ModelNotFoundException("Product not found");
         }
-        
+
         return new ProductBO(
             $product->name,
             $product->description,
@@ -65,6 +65,13 @@ class ProductService
             throw new \InvalidArgumentException("Price cannot be negative");
         }
 
+        // First, fetch the existing product
+        $existingProduct = $this->productRepository->findById($id);
+        if (!$existingProduct) {
+            throw new ModelNotFoundException("Product not found");
+        }
+
+        // Then, proceed with the update
         $updated = $this->productRepository->update($id, $productBO);
         if (!$updated) {
             throw new ModelNotFoundException("Product not found for update");
@@ -72,6 +79,7 @@ class ProductService
 
         return true;
     }
+
 
     /**
      * Delete a product by its ID.

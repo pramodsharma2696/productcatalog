@@ -1,66 +1,187 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# **Product Catalog API**
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+This is a RESTful API built with Laravel to manage a product catalog. It supports CRUD operations, filtering, search and rate limiting.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## **Features**
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+✅ **Product & Category Management:** Full CRUD operations  
+✅ **Request Validation:** Ensures data integrity  
+✅ **Business Objects (BO):** Used for data transfer  
+✅ **Data Access Objects (DAO):** Handles data access  
+✅ **Service & Repository Pattern:** Decouples business logic and database access  
+✅ **API Versioning:** `/api/v1/` for future scalability  
+✅ **Search & Filtering:** Search products by name/description, filter by category   
+✅ **Rate Limiting:** 60 requests per minute per user  
+✅ **Unit & Feature Testing:** Ensures API reliability  
+✅ **Postman API Documentation:** Simplifies API usage  
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## **System Requirements**
+- PHP >= 8.1
+- Laravel >= 10
+- Composer
+- MySQL
+- Redis (for caching, optional)
+- Postman (for API testing, optional)
+- Laragon/XAMPP (for local development, optional)
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+---
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## **Setup & Installation**
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### **1. Clone the Repository**
+```bash
+git clone https://github.com/pramodsharma2696/productcatalog.git
+cd productcatalog
+```
 
-## Laravel Sponsors
+### **2. Install Dependencies**
+```bash
+composer install
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### **3. Configure Environment**
+1. Copy `.env.example` to `.env`
+   ```bash
+   cp .env.example .env
+   ```
+2. Generate the application key
+   ```bash
+   php artisan key:generate
+   ```
 
-### Premium Partners
+### **4. Set Up the Database**
+1. Update `.env` with your database credentials:
+   ```ini
+   DB_CONNECTION=mysql
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_DATABASE=product_catalog
+   DB_USERNAME=root
+   DB_PASSWORD=
+   ```
+2. Run migrations to create database tables:
+   ```bash
+   php artisan migrate
+   ```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+### **5. Start the Development Server**
+```bash
+php artisan serve
+```
+The API will be accessible at: `http://127.0.0.1:8000`
 
-## Contributing
+If using Laragon, a virtual link will be generated (e.g., `http://abc.test`).
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+---
 
-## Code of Conduct
+## **API Endpoints**
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### **Categories**
+| Method | Endpoint                     | Description                 |
+|--------|------------------------------|-----------------------------|
+| GET    | `/api/v1/categories`         | List all categories        |
+| POST   | `/api/v1/categories`         | Create a new category      |
+| GET    | `/api/v1/categories/{id}`    | Get a single category      |
+| PUT    | `/api/v1/categories/{id}`    | Update an existing category |
+| DELETE | `/api/v1/categories/{id}`    | Delete a category          |
 
-## Security Vulnerabilities
+### **Products**
+| Method | Endpoint                      | Description                 |
+|--------|-------------------------------|------------------------------|
+| GET    | `/api/v1/products`            | List all products            |
+| POST   | `/api/v1/products`            | Create a new product         |
+| GET    | `/api/v1/products/{id}`       | Get a single product         |
+| PUT    | `/api/v1/products/{id}`       | Update an existing product   |
+| DELETE | `/api/v1/products/{id}`       | Delete a product             |
+| GET    | `/api/v1/products?search=Orange` | Search products by name, description, or SKU |
+| GET    | `/api/v1/products?category_id=1` | Filter products by category  |
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
 
-## License
+## **Testing**
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Run feature and unit tests using PHPUnit:
+```bash
+php artisan test
+```
+Run specific tests:
+```bash
+php artisan test --filter CategoryServiceTest
+php artisan test --filter CategoryTest
+php artisan test --filter ProductServiceTest
+php artisan test --filter ProductTest
+```
+
+### **Testing Environment Setup**
+Ensure you have a `.env.testing` file in your project root with the correct database configuration:
+```ini
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=testing_db
+DB_USERNAME=root
+DB_PASSWORD=
+```
+Run database migrations specifically for testing:
+```bash
+php artisan migrate --env=testing
+```
+To refresh the test database before running tests:
+```bash
+php artisan migrate:fresh --env=testing
+```
+
+---
+
+### **Clear Application Cache**
+```bash
+php artisan cache:clear
+php artisan config:clear
+php artisan view:clear
+php artisan route:clear
+```
+
+---
+
+## **Deployment**
+1. Set up your production server with PHP, MySQL, and Composer.
+2. Clone the repository and configure `.env`.
+3. Run migrations and optimizations:
+   ```bash
+   php artisan migrate --force
+   php artisan config:cache
+   php artisan route:cache
+   ```
+4. Use Supervisor to manage queue workers for background tasks.
+5. Set up a cron job for Laravel Scheduler:
+   ```bash
+   * * * * * php /path-to-project/artisan schedule:run >> /dev/null 2>&1
+   ```
+
+---
+
+## **API Documentation**
+You can use **Postman** to import the API collection:
+- **Postman Collection URL:** [Postman Collection](https://documenter.getpostman.com/view/33000660/2sAYdhKVvt)
+- Run tests and explore API responses easily.
+
+---
+
+## **License**
+This project is open-source under the [MIT License](LICENSE).
+
+---
+
+## **Author**
+👨‍💻 **Pramod Sharma**  
+[GitHub](https://github.com/pramodsharma2696)  
+[Published API Link](https://documenter.getpostman.com/view/33000660/2sAYdhKVvt)  
+
+---
+
+Feel free to contribute, raise issues, or improve this project! 🚀
+

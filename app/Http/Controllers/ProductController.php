@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\BO\ProductBO;
 use App\Http\Requests\ProductRequest;
 use App\Services\ProductService;
+use Illuminate\Http\JsonResponse;
+
 
 class ProductController extends Controller
 {
@@ -15,44 +17,33 @@ class ProductController extends Controller
         $this->productService = $productService;
     }
 
-    /**
-     * Get all products, optionally filtered by category.
-     */
-    public function index()
+    public function index(): JsonResponse
     {
-        return response()->json($this->productService->getAllProducts(request('category_id')));
+        $categoryId = request('category_id');
+        $search = request('search');
+
+        return response()->json($this->productService->getAllProducts($categoryId, $search));
     }
 
-    /**
-     * Get a single product by ID.
-     */
-    public function show(int $id)
+    
+    public function show(int $id): JsonResponse
     {
         return response()->json($this->productService->getProductById($id));
     }
 
-    /**
-     * Create a new product.
-     */
-    public function store(ProductRequest $request)
+    public function store(ProductRequest $request): JsonResponse
     {
         $productBO = new ProductBO(...$request->validated());
         return response()->json($this->productService->createProduct($productBO), 201);
     }
 
-    /**
-     * Update a product by ID.
-     */
-    public function update(ProductRequest $request, int $id)
+    public function update(ProductRequest $request, int $id): JsonResponse
     {
         $productBO = new ProductBO(...$request->validated());
         return response()->json(['updated' => $this->productService->updateProduct($id, $productBO)]);
     }
 
-    /**
-     * Delete a product by ID.
-     */
-    public function destroy(int $id)
+    public function destroy(int $id): JsonResponse
     {
         return response()->json(['deleted' => $this->productService->deleteProduct($id)]);
     }

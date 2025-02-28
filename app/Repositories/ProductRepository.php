@@ -8,14 +8,28 @@ use App\Repositories\Contracts\ProductRepositoryInterface;
 
 class ProductRepository implements ProductRepositoryInterface
 {
-    public function getAll(int $categoryId = null)
+    public function getAll(?int $categoryId = null, ?string $search = null)
     {
-        return $categoryId ? Product::where('category_id', $categoryId)->paginate(10) : Product::paginate(10);
+        $query = Product::query();
+
+        if ($categoryId) {
+            $query->where('category_id', $categoryId);
+        }
+
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'LIKE', "%{$search}%")
+                ->orWhere('description', 'LIKE', "%{$search}%")
+                ->orWhere('sku', 'LIKE', "%{$search}%");
+            });
+        }
+
+        return $query->paginate(10);
     }
 
     public function findById(int $id)
     {
-        return Product::find($id);
+        return Product::findOrFail($id);
     }
 
     public function create(ProductBO $productBO)

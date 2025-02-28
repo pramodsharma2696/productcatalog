@@ -16,7 +16,7 @@ class CategoryRepository implements CategoryRepositoryInterface
 
     public function findById(int $id)
     {
-        return Category::find($id);
+        return Category::findOrFail($id);
     }
 
     public function create(CategoryBO $CategoryBO)
