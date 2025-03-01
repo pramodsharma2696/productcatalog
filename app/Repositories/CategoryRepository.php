@@ -9,9 +9,13 @@ use App\Repositories\Contracts\CategoryRepositoryInterface;
 
 class CategoryRepository implements CategoryRepositoryInterface
 {
-    public function getAll(int $parent_category_id = null)
+    public function getAll(?int $parent_category_id = null)
     {
-        return $parent_category_id ? Category::where('parent_category_id', $parent_category_id)->paginate(10) : Category::paginate(10);
+        
+        if ($parent_category_id) {
+            return Category::with('children')->where('parent_category_id', $parent_category_id)->get();
+        }
+        return Category::with('children')->whereNull('parent_category_id')->get();
     }
 
     public function findById(int $id)

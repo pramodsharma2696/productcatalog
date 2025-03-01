@@ -11,4 +11,9 @@ class Category extends Model
     use HasFactory;
     use SoftDeletes;
     protected $fillable = ['name','parent_category_id'];
+
+    public function children()
+    {
+        return $this->hasMany(Category::class, 'parent_category_id')->with('children');
+    }
 }

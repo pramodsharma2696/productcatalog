@@ -46,7 +46,7 @@
 								"categories"
 							]
 						},
-						"description": "### Create a New Category\n\nThis endpoint allows you to create a new category.\n\n#### Request Body\n\n- `name` (text): The name of the category.\n    \n- `parent_category_id` (text): The ID of the parent category, if applicable.\n    \n\n#### Response (201 - Created)\n\nThe response will be in JSON format with the following schema:\n\n``` json\n{\n    \"type\": \"object\",\n    \"properties\": {\n        \"name\": {\"type\": \"string\"},\n        \"parent_category_id\": {\"type\": [\"string\", \"null\"]},\n        \"updated_at\": {\"type\": \"string\"},\n        \"created_at\": {\"type\": \"string\"},\n        \"id\": {\"type\": \"integer\"}\n    }\n}\n\n ```"
+						"description": "### Create a New Category\n\nThis endpoint allows you to create a new category.\n\n#### Request Body\n\n- `name` (text): The name of the category.\n    \n- `parent_category_id` (text): The ID of the parent category, if applicable.\n    \n\n#### Response (201 - Created)\n\nThe response will be in JSON format with the following schema:\n\n``` json\n{\n  \"name\": \"Matar Paneer\",\n  \"parent_category_id\": 2,\n  \"updated_at\": \"2025-03-01T03:52:55.000000Z\",\n  \"created_at\": \"2025-03-01T03:52:55.000000Z\",\n  \"id\": 7\n}\n\n ```"
 					},
 					"response": []
 				},
@@ -71,13 +71,18 @@
 							"urlencoded": [
 								{
 									"key": "name",
-									"value": "Fruits updated",
+									"value": "Paneer",
+									"type": "text"
+								},
+								{
+									"key": "parent_category_id",
+									"value": "2",
 									"type": "text"
 								}
 							]
 						},
 						"url": {
-							"raw": "{{url}}/api/v1/categories/2",
+							"raw": "{{url}}/api/v1/categories/7",
 							"host": [
 								"{{url}}"
 							],
@@ -85,15 +90,35 @@
 								"api",
 								"v1",
 								"categories",
-								"2"
+								"7"
 							]
 						},
-						"description": "### Update Category\n\nThis endpoint is used to update a specific category by making an HTTP PUT request to the specified URL.\n\n#### Request Body\n\n- name (text): Description of the category.\n    \n\n#### Response\n\nThe response of this request can be documented as a JSON schema:\n\n``` json\n{\n    \"type\": \"object\",\n    \"properties\": {\n        \"id\": {\n            \"type\": \"integer\"\n        },\n        \"name\": {\n            \"type\": \"string\"\n        },\n        \"parent_category_id\": {\n            \"type\": [\"integer\", \"null\"]\n        },\n        \"created_at\": {\n            \"type\": \"string\"\n        },\n        \"updated_at\": {\n            \"type\": \"string\"\n        },\n        \"deleted_at\": {\n            \"type\": [\"string\", \"null\"]\n        }\n    }\n}\n\n ```"
+						"description": "### Update Category\n\nThis endpoint allows the client to update a specific category by sending an HTTP PUT request to the specified URL.\n\n#### Request Parameters\n\n- `name` (text): The name of the category to be updated.\n    \n- `parent_category_id` (text): The ID of the parent category for the category being updated.\n    \n\n#### Headers\n\n- `Content-Type`: application/x-www-form-urlencoded\n    \n\n#### Response\n\nUpon a successful update, the server responds with a status code of 200 and a JSON object containing the updated category details, including the category ID, name, parent category ID, creation timestamp, last update timestamp, and deletion timestamp (if applicable).\n\nExample response:\n\n``` json\n{\n  \"id\": 7,\n  \"name\": \"Paneer\",\n  \"parent_category_id\": 2,\n  \"created_at\": \"2025-03-01T03:52:55.000000Z\",\n  \"updated_at\": \"2025-03-01T04:02:21.000000Z\",\n  \"deleted_at\": null\n}\n\n ```"
 					},
 					"response": []
 				},
 				{
 					"name": "List Categories",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Updated response time test to 300ms\r",
+									"pm.test(\"Response time is within an acceptable range\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(300);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -108,7 +133,7 @@
 								"categories"
 							]
 						},
-						"description": "### Get Categories\n\nThis endpoint sends an HTTP GET request to retrieve a list of categories.\n\n#### Request Body\n\nThis request does not require a request body.\n\n#### Response\n\n- Status: 200\n    \n- Content-Type: application/json\n    \n\n##### Response Body\n\n``` json\n{\n    \"current_page\": 0,\n    \"data\": [\n        {\n            \"id\": 0,\n            \"name\": \"\",\n            \"parent_category_id\": null,\n            \"created_at\": \"\",\n            \"updated_at\": \"\",\n            \"deleted_at\": null\n        }\n    ],\n    \"first_page_url\": \"\",\n    \"from\": 0,\n    \"last_page\": 0,\n    \"last_page_url\": \"\",\n    \"links\": [\n        {\n            \"url\": null,\n            \"label\": \"\",\n            \"active\": true\n        }\n    ],\n    \"next_page_url\": null,\n    \"path\": \"\",\n    \"per_page\": 0,\n    \"prev_page_url\": null,\n    \"to\": 0,\n    \"total\": 0\n}\n\n ```\n\nThis response contains an array of category objects with their respective attributes."
+						"description": "### Get Categories\n\nThis endpoint makes an HTTP GET request to retrieve a list of categories.\n\n#### Request Body\n\nThis request does not require a request body.\n\n#### Response\n\n- Status: 200\n    \n- Content-Type: application/json\n    \n\nThe response will contain an array of category objects, each with the following properties:\n\n- id (number): The unique identifier for the category.\n    \n- name (string): The name of the category.\n    \n- parent_category_id (number): The identifier of the parent category, if it exists.\n    \n- created_at (string): The timestamp of when the category was created.\n    \n- updated_at (string): The timestamp of when the category was last updated.\n    \n- deleted_at (string): The timestamp of when the category was deleted, if applicable.\n    \n- children (array): An array of child categories, each with the same properties as the parent category.\n    \n\nExample response:\n\n``` json\n[\n  {\n    \"id\": 1,\n    \"name\": \"Food\",\n    \"parent_category_id\": null,\n    \"created_at\": \"2025-03-01T03:36:12.000000Z\",\n    \"updated_at\": \"2025-03-01T03:36:12.000000Z\",\n    \"deleted_at\": null,\n    \"children\": [\n      {\n        \"id\": 2,\n        \"name\": \"Veg\",\n        \"parent_category_id\": 1,\n        \"created_at\": \"2025-03-01T03:36:33.000000Z\",\n        \"updated_at\": \"2025-03-01T03:36:33.000000Z\",\n        \"deleted_at\": null,\n        \"children\": [\n          {\n            \"id\": 6,\n            \"name\": \"Paalak Saag\",\n            \"parent_category_id\": 2,\n            \"created_at\": \"2025-03-01T03:52:37.000000Z\",\n            \"updated_at\": \"2025-03-01T03:52:37.000000Z\",\n            \"deleted_at\": null,\n            \"children\": []\n          },\n          {\n            \"id\": 7,\n            \"name\": \"Paneer\",\n            \"parent_category_id\": 2,\n            \"created_at\": \"2025-03-01T03:52:55.000000Z\",\n            \"updated_at\": \"2025-03-01T03:52:55.000000Z\",\n            \"deleted_at\": null,\n            \"children\": []\n          }\n        ]\n      },\n      {\n        \"id\": 3,\n        \"name\": \"Non veg\",\n        \"parent_category_id\": 1,\n        \"created_at\": \"2025-03-01T03:36:45.000000Z\",\n        \"updated_at\": \"2025-03-01T03:36:45.000000Z\",\n        \"deleted_at\": null,\n        \"children\": [\n          {\n            \"id\": 4,\n            \"name\": \"Chicken\",\n            \"parent_category_id\": 3,\n            \"created_at\": \"2025-03-01T03:52:10.000000Z\",\n            \"updated_at\": \"2025-03-01T03:52:10.000000Z\",\n            \"deleted_at\": null,\n            \"children\": []\n          },\n          {\n            \"id\": 5,\n            \"name\": \"Mutton\",\n            \"parent_category_id\": 3,\n            \"created_at\": \"2025-03-01T03:52:18.000000Z\",\n            \"updated_at\": \"2025-03-01T03:52:18.000000Z\",\n            \"deleted_at\": null,\n            \"children\": []\n          }\n        ]\n      }\n    ]\n  }\n]\n\n ```"
 					},
 					"response": []
 				},
@@ -129,7 +154,7 @@
 								"2"
 							]
 						},
-						"description": "### Retrieve Category Details\n\nThis endpoint retrieves the details of a specific category.\n\n#### Request\n\n- Method: GET\n    \n- URL: `{{url}}/api/v1/categories/2`\n    \n\n#### Response\n\nThe response will be a JSON object with the following schema:\n\n``` json\n{\n    \"type\": \"object\",\n    \"properties\": {\n        \"name\": {\n            \"type\": \"string\"\n        },\n        \"parent_category_id\": {\n            \"type\": [\"string\", \"null\"]\n        }\n    }\n}\n\n ```"
+						"description": "### Retrieve Category Details\n\nThis endpoint retrieves the details of a specific category.\n\n#### Request\n\n- Method: GET\n    \n- URL: `{{url}}/api/v1/categories/2`\n    \n\n#### Response\n\nThe response will be a JSON object with the following schema:\n\n``` json\n{\n  \"name\": \"Veg\",\n  \"parent_category_id\": 1\n}\n\n ```"
 					},
 					"response": []
 				},
@@ -175,27 +200,27 @@
 							"urlencoded": [
 								{
 									"key": "name",
-									"value": "Shirt",
+									"value": "Butter Chicken",
 									"type": "text"
 								},
 								{
 									"key": "description",
-									"value": "It is a Shirt",
+									"value": "It's food of choice",
 									"type": "text"
 								},
 								{
 									"key": "sku",
-									"value": "sku1004",
+									"value": "sku1001",
 									"type": "text"
 								},
 								{
 									"key": "price",
-									"value": "110",
+									"value": "50",
 									"type": "text"
 								},
 								{
 									"key": "category_id",
-									"value": "1",
+									"value": "3",
 									"type": "text"
 								}
 							]
@@ -211,7 +236,7 @@
 								"products"
 							]
 						},
-						"description": "### Create a New Product\n\nThis endpoint allows you to create a new product by sending a POST request to the specified URL.\n\n#### Request Body Parameters\n\n- `name` (text) - The name of the product.\n    \n- `description` (text) - The description of the product.\n    \n- `sku` (text) - The stock keeping unit (SKU) of the product.\n    \n- `price` (text) - The price of the product.\n    \n- `category_id` (text) - The ID of the category to which the product belongs.\n    \n\n#### Response (JSON Schema)\n\n``` json\n{\n  \"type\": \"object\",\n  \"properties\": {\n    \"name\": { \"type\": \"string\" },\n    \"description\": { \"type\": \"string\" },\n    \"sku\": { \"type\": \"string\" },\n    \"price\": { \"type\": \"number\" },\n    \"category_id\": { \"type\": \"number\" },\n    \"updated_at\": { \"type\": \"string\" },\n    \"created_at\": { \"type\": \"string\" },\n    \"id\": { \"type\": \"number\" }\n  }\n}\n\n ```"
+						"description": "### Create a New Product\n\nThis endpoint allows you to create a new product by sending a POST request to the specified URL.\n\n#### Request Body Parameters\n\n- `name` (text) - The name of the product.\n    \n- `description` (text) - The description of the product.\n    \n- `sku` (text) - The stock keeping unit (SKU) of the product.\n    \n- `price` (text) - The price of the product.\n    \n- `category_id` (text) - The ID of the category to which the product belongs.\n    \n\n#### Response (JSON Schema)\n\n``` json\n{\n  \"name\": \"Butter Chicken\",\n  \"description\": \"It's food of choice\",\n  \"sku\": \"sku1001\",\n  \"price\": 50,\n  \"category_id\": 3,\n  \"updated_at\": \"2025-03-01T04:17:43.000000Z\",\n  \"created_at\": \"2025-03-01T04:17:43.000000Z\",\n  \"id\": 1\n}\n\n ```"
 					},
 					"response": []
 				},
@@ -231,33 +256,33 @@
 							"urlencoded": [
 								{
 									"key": "name",
-									"value": "Jeans",
+									"value": "Butter Chicken 1",
 									"type": "text"
 								},
 								{
 									"key": "description",
-									"value": "It is a Jeans",
+									"value": "It's food of choice",
 									"type": "text"
 								},
 								{
 									"key": "sku",
-									"value": "sku1002",
+									"value": "sku1001",
 									"type": "text"
 								},
 								{
 									"key": "price",
-									"value": "110",
+									"value": "50",
 									"type": "text"
 								},
 								{
 									"key": "category_id",
-									"value": "1",
+									"value": "3",
 									"type": "text"
 								}
 							]
 						},
 						"url": {
-							"raw": "{{url}}/api/v1/products/2",
+							"raw": "{{url}}/api/v1/products/1",
 							"host": [
 								"{{url}}"
 							],
@@ -265,10 +290,10 @@
 								"api",
 								"v1",
 								"products",
-								"2"
+								"1"
 							]
 						},
-						"description": "### Update Product Details\n\nThis endpoint allows the client to update the details of a specific product.\n\n#### Request\n\n- Method: PUT\n    \n- Endpoint: `{{url}}/api/v1/products/2`\n    \n- Body (x-www-form-urlencoded):\n    \n    - `name` (text): The updated name of the product.\n        \n    - `description` (text): The updated description of the product.\n        \n    - `sku` (text): The updated stock keeping unit (SKU) of the product.\n        \n    - `price` (text): The updated price of the product.\n        \n    - `category_id` (text): The updated category ID of the product.\n        \n\n#### Response\n\nThe response is in JSON format with the following schema:\n\n``` json\n{\n  \"type\": \"object\",\n  \"properties\": {\n    \"updated\": {\n      \"type\": \"boolean\"\n    }\n  }\n}\n\n ```\n\n- Status: 200\n    \n- Content-Type: application/json\n    \n- { \"updated\": true}"
+						"description": "### Update Product Details\n\nThis endpoint allows the client to update the details of a specific product.\n\n#### Request\n\n- Method: PUT\n    \n- Endpoint: `{{url}}/api/v1/products/1`\n    \n- Body (x-www-form-urlencoded):\n    \n    - `name` (text): The updated name of the product.\n        \n    - `description` (text): The updated description of the product.\n        \n    - `sku` (text): The updated stock keeping unit (SKU) of the product.\n        \n    - `price` (text): The updated price of the product.\n        \n    - `category_id` (text): The updated category ID of the product.\n        \n\n#### Response\n\nThe response is in JSON format with the following schema:\n\n``` json\n{\n  \"updated\": true\n}\n\n ```\n\n- Status: 200\n    \n- Content-Type: application/json\n    \n- { \"updated\": true}"
 					},
 					"response": []
 				},
@@ -288,7 +313,7 @@
 								"products"
 							]
 						},
-						"description": "### API Request Description\n\nThis API endpoint sends an HTTP GET request to retrieve a list of products.\n\n### Request Body\n\nThis request does not require a request body.\n\n### Response Body\n\nThe response is in JSON format and includes the following schema:\n\n``` json\n{\n  \"current_page\": number,\n  \"data\": [\n    {\n      \"id\": number,\n      \"name\": string,\n      \"description\": string,\n      \"sku\": string,\n      \"price\": string,\n      \"category_id\": number,\n      \"created_at\": string,\n      \"updated_at\": string,\n      \"deleted_at\": string | null\n    }\n  ],\n  \"first_page_url\": string,\n  \"from\": number,\n  \"last_page\": number,\n  \"last_page_url\": string,\n  \"links\": [\n    {\n      \"url\": string | null,\n      \"label\": string,\n      \"active\": boolean\n    }\n  ],\n  \"next_page_url\": string | null,\n  \"path\": string,\n  \"per_page\": number,\n  \"prev_page_url\": string | null,\n  \"to\": number,\n  \"total\": number\n}\n\n ```"
+						"description": "### API Request Description\n\nThis API endpoint sends an HTTP GET request to retrieve a list of products.\n\n### Request Body\n\nThis request does not require a request body.\n\n### Response Body\n\nThe response is in JSON format and includes the following schema:\n\n``` json\n{\n  \"current_page\": 1,\n  \"data\": [\n    {\n      \"id\": 1,\n      \"name\": \"Butter Chicken 1\",\n      \"description\": \"It's food of choice\",\n      \"sku\": \"sku1001\",\n      \"price\": \"50.00\",\n      \"category_id\": 3,\n      \"created_at\": \"2025-03-01T04:17:43.000000Z\",\n      \"updated_at\": \"2025-03-01T04:20:08.000000Z\",\n      \"deleted_at\": null\n    }\n  ],\n  \"first_page_url\": \"http://productcatalog.test/api/v1/products?page=1\",\n  \"from\": 1,\n  \"last_page\": 1,\n  \"last_page_url\": \"http://productcatalog.test/api/v1/products?page=1\",\n  \"links\": [\n    {\n      \"url\": null,\n      \"label\": \"« Previous\",\n      \"active\": false\n    },\n    {\n      \"url\": \"http://productcatalog.test/api/v1/products?page=1\",\n      \"label\": \"1\",\n      \"active\": true\n    },\n    {\n      \"url\": null,\n      \"label\": \"Next »\",\n      \"active\": false\n    }\n  ],\n  \"next_page_url\": null,\n  \"path\": \"http://productcatalog.test/api/v1/products\",\n  \"per_page\": 10,\n  \"prev_page_url\": null,\n  \"to\": 1,\n  \"total\": 1\n}\n\n ```"
 					},
 					"response": []
 				},
@@ -298,7 +323,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/api/v1/products?search=Orange",
+							"raw": "{{url}}/api/v1/products?search=chicken",
 							"host": [
 								"{{url}}"
 							],
@@ -310,11 +335,11 @@
 							"query": [
 								{
 									"key": "search",
-									"value": "Orange"
+									"value": "chicken"
 								}
 							]
 						},
-						"description": "### API Request Description\n\nThis API endpoint sends an HTTP GET request to retrieve a list of products filtered by the search parameter \"Orange\".\n\n### Request Body\n\nThis request does not require a request body.\n\n### Response Body\n\nThe response is in JSON format and includes the following schema:\n\n``` json\n{\n  \"current_page\": number,\n  \"data\": [\n    {\n      \"id\": number,\n      \"name\": string,\n      \"description\": string,\n      \"sku\": string,\n      \"price\": string,\n      \"category_id\": number,\n      \"created_at\": string,\n      \"updated_at\": string,\n      \"deleted_at\": string | null\n    }\n  ],\n  \"first_page_url\": string,\n  \"from\": number,\n  \"last_page\": number,\n  \"last_page_url\": string,\n  \"links\": [\n    {\n      \"url\": string | null,\n      \"label\": string,\n      \"active\": boolean\n    }\n  ],\n  \"next_page_url\": string | null,\n  \"path\": string,\n  \"per_page\": number,\n  \"prev_page_url\": string | null,\n  \"to\": number,\n  \"total\": number\n}\n\n ```"
+						"description": "### API Request Description\n\nThis API endpoint sends an HTTP GET request to retrieve a list of products filtered by the search parameter \"Orange\".\n\n### Request Body\n\nThis request does not require a request body.\n\n### Response Body\n\nThe response is in JSON format and includes the following schema:\n\n``` json\n{\n  \"current_page\": 1,\n  \"data\": [\n    {\n      \"id\": 1,\n      \"name\": \"Butter Chicken 1\",\n      \"description\": \"It's food of choice\",\n      \"sku\": \"sku1001\",\n      \"price\": \"50.00\",\n      \"category_id\": 3,\n      \"created_at\": \"2025-03-01T04:17:43.000000Z\",\n      \"updated_at\": \"2025-03-01T04:20:08.000000Z\",\n      \"deleted_at\": null\n    }\n  ],\n  \"first_page_url\": \"http://productcatalog.test/api/v1/products?page=1\",\n  \"from\": 1,\n  \"last_page\": 1,\n  \"last_page_url\": \"http://productcatalog.test/api/v1/products?page=1\",\n  \"links\": [\n    {\n      \"url\": null,\n      \"label\": \"« Previous\",\n      \"active\": false\n    },\n    {\n      \"url\": \"http://productcatalog.test/api/v1/products?page=1\",\n      \"label\": \"1\",\n      \"active\": true\n    },\n    {\n      \"url\": null,\n      \"label\": \"Next »\",\n      \"active\": false\n    }\n  ],\n  \"next_page_url\": null,\n  \"path\": \"http://productcatalog.test/api/v1/products\",\n  \"per_page\": 10,\n  \"prev_page_url\": null,\n  \"to\": 1,\n  \"total\": 1\n}\n\n ```"
 					},
 					"response": []
 				},
@@ -324,7 +349,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/api/v1/products?category_id=1",
+							"raw": "{{url}}/api/v1/products?category_id=3",
 							"host": [
 								"{{url}}"
 							],
@@ -336,11 +361,11 @@
 							"query": [
 								{
 									"key": "category_id",
-									"value": "1"
+									"value": "3"
 								}
 							]
 						},
-						"description": "### Get Products by Category ID\n\nThis endpoint retrieves a list of products based on the provided category ID.\n\n#### Request\n\n- Method: GET\n    \n- URL: `{{url}}/api/v1/products`\n    \n- Query Parameters:\n    \n    - `category_id` (integer, required): The ID of the category for which products are to be retrieved.\n        \n\n#### Response\n\n- Status: 200\n    \n- Content-Type: application/json\n    \n\nExample Response Body:\n\n``` json\n{\n  \"current_page\": 0,\n  \"data\": [\n    {\n      \"id\": 0,\n      \"name\": \"\",\n      \"description\": \"\",\n      \"sku\": \"\",\n      \"price\": \"\",\n      \"category_id\": 0,\n      \"created_at\": \"\",\n      \"updated_at\": \"\",\n      \"deleted_at\": null\n    }\n  ],\n  \"first_page_url\": \"\",\n  \"from\": 0,\n  \"last_page\": 0,\n  \"last_page_url\": \"\",\n  \"links\": [\n    {\n      \"url\": null,\n      \"label\": \"\",\n      \"active\": true\n    }\n  ],\n  \"next_page_url\": null,\n  \"path\": \"\",\n  \"per_page\": 0,\n  \"prev_page_url\": null,\n  \"to\": 0,\n  \"total\": 0\n}\n\n ```"
+						"description": "### Get Products by Category ID\n\nThis endpoint retrieves a list of products based on the provided category ID.\n\n#### Request\n\n- Method: GET\n    \n- URL: `{{url}}/api/v1/products`\n    \n- Query Parameters:\n    \n    - `category_id` (integer, required): The ID of the category for which products are to be retrieved.\n        \n\n#### Response\n\n- Status: 200\n    \n- Content-Type: application/json\n    \n\nExample Response Body:\n\n``` json\n{\n  \"current_page\": 1,\n  \"data\": [\n    {\n      \"id\": 1,\n      \"name\": \"Butter Chicken 1\",\n      \"description\": \"It's food of choice\",\n      \"sku\": \"sku1001\",\n      \"price\": \"50.00\",\n      \"category_id\": 3,\n      \"created_at\": \"2025-03-01T04:17:43.000000Z\",\n      \"updated_at\": \"2025-03-01T04:20:08.000000Z\",\n      \"deleted_at\": null\n    }\n  ],\n  \"first_page_url\": \"http://productcatalog.test/api/v1/products?page=1\",\n  \"from\": 1,\n  \"last_page\": 1,\n  \"last_page_url\": \"http://productcatalog.test/api/v1/products?page=1\",\n  \"links\": [\n    {\n      \"url\": null,\n      \"label\": \"« Previous\",\n      \"active\": false\n    },\n    {\n      \"url\": \"http://productcatalog.test/api/v1/products?page=1\",\n      \"label\": \"1\",\n      \"active\": true\n    },\n    {\n      \"url\": null,\n      \"label\": \"Next »\",\n      \"active\": false\n    }\n  ],\n  \"next_page_url\": null,\n  \"path\": \"http://productcatalog.test/api/v1/products\",\n  \"per_page\": 10,\n  \"prev_page_url\": null,\n  \"to\": 1,\n  \"total\": 1\n}\n\n ```"
 					},
 					"response": []
 				},
@@ -361,7 +386,7 @@
 								"1"
 							]
 						},
-						"description": "### Retrieve Product Details\n\nThis endpoint retrieves the details of a specific product by providing the product ID in the URL.\n\n#### Request\n\n- Method: GET\n    \n- URL: {{url}}/api/v1/products/1\n    \n\n#### Response\n\nThe response will be a JSON object with the following schema:\n\n``` json\n{\n  \"type\": \"object\",\n  \"properties\": {\n    \"name\": {\n      \"type\": \"string\"\n    },\n    \"description\": {\n      \"type\": \"string\"\n    },\n    \"sku\": {\n      \"type\": \"string\"\n    },\n    \"price\": {\n      \"type\": \"number\"\n    },\n    \"category_id\": {\n      \"type\": \"number\"\n    }\n  }\n}\n\n ```"
+						"description": "### Retrieve Product Details\n\nThis endpoint retrieves the details of a specific product by providing the product ID in the URL.\n\n#### Request\n\n- Method: GET\n    \n- URL: {{url}}/api/v1/products/1\n    \n\n#### Response\n\nThe response will be a JSON object with the following schema:\n\n``` json\n{\n  \"name\": \"Butter Chicken 1\",\n  \"description\": \"It's food of choice\",\n  \"sku\": \"sku1001\",\n  \"price\": 50,\n  \"category_id\": 3\n}\n\n ```"
 					},
 					"response": []
 				},
@@ -371,7 +396,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/api/v1/products/4",
+							"raw": "{{url}}/api/v1/products/1",
 							"host": [
 								"{{url}}"
 							],
@@ -379,10 +404,10 @@
 								"api",
 								"v1",
 								"products",
-								"4"
+								"1"
 							]
 						},
-						"description": "The API endpoint sends an HTTP DELETE request to delete a product with the ID 4.\n\n### Response\n\nThe response is in JSON format and has the following schema:\n\n``` json\n{\n    \"type\": \"object\",\n    \"properties\": {\n        \"deleted\": {\n            \"type\": \"boolean\"\n        }\n    },\n    \"required\": [\"deleted\"]\n}\n\n ```"
+						"description": "The API endpoint sends an HTTP DELETE request to delete a product with the ID 4.\n\n### Response\n\nThe response is in JSON format and has the following schema:\n\n``` json\n{\n  \"deleted\": true\n}\n\n ```"
 					},
 					"response": []
 				}
