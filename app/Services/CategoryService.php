@@ -18,7 +18,7 @@ class CategoryService
     /**
      * Retrieve all categories, optionally filtered by parent category.
      */
-    public function getAllCategories(int $parentCategoryId = null)
+    public function getAllCategories(?int $parentCategoryId = null)
     {
         return $this->categoryRepository->getAll($parentCategoryId);
     }
